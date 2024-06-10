@@ -7,6 +7,7 @@ import Tv from "./Tv"
 import { FOCUS_LECTURER } from "../../constants"
 import Tooltip from "../../components/Tootlip"
 import LecturerPage from "../../html/LecturerPage"
+import { useResponsiveScreen } from "../../utils"
 
 const LecturerArea = ({ nodes, materials }) => {
     // get the state and setter from the store
@@ -14,6 +15,7 @@ const LecturerArea = ({ nodes, materials }) => {
     const setFocusTarget = useMainStore.useSetFocusTarget()
     const setCameraPosition = useMainStore.useSetCameraPosition()
     const setControlsTargetOffset = useMainStore.useSetControlsTargetOffset()
+    const { isMobile } = useResponsiveScreen()
 
     const [isHovered, setIsHovered] = React.useState(false)
 
@@ -29,9 +31,10 @@ const LecturerArea = ({ nodes, materials }) => {
     const onClick = React.useCallback((e) => {
         e.stopPropagation()
         if (focusTarget === null) {
+            const cameraPosition = isMobile ? [-.35, 1.85, 2.05] : [-.3, 2.25, 3.25]
             setIsHovered(false)
             setFocusTarget(FOCUS_LECTURER)
-            setCameraPosition([-.3, 2.25, 3.25])
+            setCameraPosition(cameraPosition)
             setControlsTargetOffset([0, .003, 0.01])
         }
     }, [focusTarget])

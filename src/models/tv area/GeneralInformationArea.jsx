@@ -7,6 +7,7 @@ import Tv from "./Tv"
 import { FOCUS_GENERAL_INFORMATION } from "../../constants"
 import Tooltip from "../../components/Tootlip"
 import GeneralInformationPage from "../../html/GeneralInformationPage"
+import { useResponsiveScreen } from "../../utils"
 
 const GeneralInformationArea = ({ nodes, materials }) => {
     // get the state and setter from the store
@@ -14,6 +15,7 @@ const GeneralInformationArea = ({ nodes, materials }) => {
     const setFocusTarget = useMainStore.useSetFocusTarget()
     const setCameraPosition = useMainStore.useSetCameraPosition()
     const setControlsTargetOffset = useMainStore.useSetControlsTargetOffset()
+    const { isMobile } = useResponsiveScreen()
 
     const [isHovered, setIsHovered] = React.useState(false)
 
@@ -29,9 +31,10 @@ const GeneralInformationArea = ({ nodes, materials }) => {
     const onClick = React.useCallback((e) => {
         e.stopPropagation()
         if (focusTarget === null) {
+            const cameraPosition = isMobile ? [-2.35, 1.95, .1] : [-3.25, 2.25, .1]
             setIsHovered(false)
             setFocusTarget(FOCUS_GENERAL_INFORMATION)
-            setCameraPosition([-3.25, 2.25, .1])
+            setCameraPosition(cameraPosition)
             setControlsTargetOffset([-0.01, .003, 0])
         }
     }, [focusTarget])

@@ -7,6 +7,7 @@ import WorkingArea from "./working area/WorkingArea"
 import { FOCUS_RESEARCH } from "../constants"
 import Tooltip from "../components/Tootlip"
 import ResearchPage from "../html/ResearchPage"
+import { useResponsiveScreen } from "../utils"
 
 const ResearchArea = ({ nodes, materials }) => {
     // get the state and setter from the store
@@ -14,6 +15,7 @@ const ResearchArea = ({ nodes, materials }) => {
     const setFocusTarget = useMainStore.useSetFocusTarget()
     const setCameraPosition = useMainStore.useSetCameraPosition()
     const setControlsTargetOffset = useMainStore.useSetControlsTargetOffset()
+    const { isMobile } = useResponsiveScreen()
 
     const [isHovered, setIsHovered] = React.useState(false)
 
@@ -29,9 +31,10 @@ const ResearchArea = ({ nodes, materials }) => {
     const onClick = React.useCallback((e) => {
         e.stopPropagation()
         if (focusTarget === null) {
+            const cameraPosition = isMobile ? [-.675  , .8, -1.7] : [-.7  , .8, -2]
             setIsHovered(false)
             setFocusTarget(FOCUS_RESEARCH)
-            setCameraPosition([-.7  , .8, -2])
+            setCameraPosition(cameraPosition)
             setControlsTargetOffset([0, 0, -0.01])
         }
     }, [focusTarget])

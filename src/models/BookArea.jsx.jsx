@@ -7,6 +7,7 @@ import WorkingArea from "./working area/WorkingArea"
 import { FOCUS_BOOKS } from "../constants"
 import Tooltip from "../components/Tootlip"
 import BookPage from "../html/BookPage"
+import { useResponsiveScreen } from "../utils"
 
 const BookArea = ({ nodes, materials }) => {
     // get the state and setter from the store
@@ -14,6 +15,7 @@ const BookArea = ({ nodes, materials }) => {
     const setFocusTarget = useMainStore.useSetFocusTarget()
     const setCameraPosition = useMainStore.useSetCameraPosition()
     const setControlsTargetOffset = useMainStore.useSetControlsTargetOffset()
+    const { isMobile } = useResponsiveScreen()
 
     const [isHovered, setIsHovered] = React.useState(false)
 
@@ -29,9 +31,10 @@ const BookArea = ({ nodes, materials }) => {
     const onClick = React.useCallback((e) => {
         e.stopPropagation()
         if (focusTarget === null) {
+            const cameraPosition = isMobile ? [-.275  , .8, 3.2] : [-.3  , .8, 3.5]
             setIsHovered(false)
             setFocusTarget(FOCUS_BOOKS)
-            setCameraPosition([-.3  , .8, 3.5])
+            setCameraPosition(cameraPosition)
             setControlsTargetOffset([0, 0, 0.01])
         }
     }, [focusTarget])
